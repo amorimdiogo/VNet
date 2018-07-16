@@ -20,7 +20,7 @@ import scipy.misc
 import scipy.ndimage
 
 INPUT_SIZE = 256  # Input feature width/height
-INPUT_DEPTH = 64  # Input depth
+INPUT_DEPTH = 32  # Input depth
 
 """ K. Sahi, S. Jackson, E. Wiebe, G. Armstrong, S. Winters, R. Moore, et al., ”The value of liver windows
 settings in the detection of small renal cell carcinomas on unenhanced computed tomography,”
@@ -89,7 +89,7 @@ def get_data(vol_dir, seg_dir, crop=False):
     return volume, segmentation
 
 
-def create_dataset(path, px_size=INPUT_SIZE, slice_count=INPUT_DEPTH, crop=False, normalize=False):
+def create_dataset(path, px_size=INPUT_SIZE, slice_count=INPUT_DEPTH, crop=False):
     """Returns dataset with shape (m, z, x, y, n)"""
 
     files = sorted_alphanumeric(os.listdir(path))
@@ -114,7 +114,6 @@ def create_dataset(path, px_size=INPUT_SIZE, slice_count=INPUT_DEPTH, crop=False
         volume, segmentation = get_data(path + volumes[i], path + segmentations[i], crop)
 
         volume = scale_volume(volume, slice_count, px_size)
-        print(volume.shape)
         segmentation = scale_segmentation(segmentation, slice_count, px_size)
         slices.append([volume, segmentation])
         print("%i/%i (%i%%)" % (i+1, m, ((i+1)/m*100)))
@@ -150,7 +149,7 @@ def divide_segmentation(segmentation):
     background[background>1] = 0
     # np.concatenate((layer1, layer2, background), axis=-1)
     # return layer1, layer2, background
-    a = np.concatenate((layer1, layer2, background), axis=-1)
+    # a = np.concatenate((layer1, layer2, background), axis=-1)
     # return a
     return layer1  # liver
 
@@ -162,11 +161,11 @@ val_dir = data_dir + "val/"
 save_dir = "/home/guest/PycharmProjects/tese/Vnet/dataset/"
 
 # print("Obtaining Training Data:")
-# train_set = create_dataset(train_dir, crop=False)
+# train_set = create_dataset(train_dir, crop=True)
 # write_dataset(train_set, save_dir + "train_data.h5")
 
 print("Obtaining Validation Data:")
-val_set = create_dataset(val_dir)
+val_set = create_dataset(val_dir, crop=True)
 write_dataset(val_set, save_dir + "val_data.h5")
 
 # print("Obtaining Test Data:")
