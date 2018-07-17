@@ -32,9 +32,9 @@ def load_predictions(path):
 def print_prediction(test, pred, m, slice):
     fig = plt.figure()
     y = fig.add_subplot(1, 2, 1)
-    y.imshow(test[m, slice], cmap='gray')
+    y.imshow(test[m, :, :, slice], cmap='gray')
     y = fig.add_subplot(1, 2, 2)
-    y.imshow(pred[m, slice], cmap='gray')
+    y.imshow(pred[m, :, :, slice], cmap='gray')
     plt.show()
 
 
