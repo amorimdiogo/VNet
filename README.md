@@ -1,4 +1,4 @@
-# VNet
+# VNet - Keras
 
 **MSc. Thesis** - *3D Convolutional Neural Network for Liver Tumor Segmentation*
 
